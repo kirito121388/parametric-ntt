@@ -40,6 +40,7 @@ limitations under the License.
 //   - Number of parallel butterfly units for computation
 //   - Must be a power of 2 (e.g., 1, 2, 4, 8, 16)
 //   - Must satisfy: PE_NUMBER <= RING_SIZE/2
+//     (Each butterfly processes 2 inputs, so maximum parallelism is RING_SIZE/2)
 //   - Higher values increase throughput but consume more area
 `define PE_NUMBER       1
 
@@ -82,7 +83,8 @@ limitations under the License.
 // ------------------------------------------------
 // Parameters for modular reduction (AUTO-COMPUTED)
 // ------------------------------------------------
-// Works for K (DATA_SIZE_ARB) between 9-bit to 64-bit
+// Works for K (DATA_SIZE_ARB) between 8-bit to 64-bit
+// (Practical range: 9-64 bits for optimal Barrett reduction performance)
 // These parameters configure the Barrett modular reduction unit.
 
 // `RING_DEPTH: Log2 of RING_SIZE
