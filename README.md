@@ -38,7 +38,7 @@ All other parameters in `defines.v` are automatically derived from the three use
 #### Modular Reduction Parameters (Barrett Reduction)
 * **`RING_DEPTH`**: log₂(RING_SIZE)
 * **`W_SIZE`**: Word size for multi-precision arithmetic = RING_DEPTH + 1
-* **`L_SIZE`**: Number of words needed (conditional approximation of ⌈DATA_SIZE_ARB / W_SIZE⌉)
+* **`L_SIZE`**: Number of words needed (threshold-based calculation, max value 8)
 * **`MODRED_DELAY`**: Modular reduction pipeline latency = L_SIZE × 2 + 1
 
 #### System Parameters
