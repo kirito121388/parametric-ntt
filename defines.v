@@ -56,7 +56,7 @@ limitations under the License.
 `define DATA_SIZE       (1 << ($clog2(`DATA_SIZE_ARB)))
 
 // `DATA_SIZE_DEPTH: Log2 of DATA_SIZE
-//   - Calculates log2(DATA_SIZE) 
+//   - Calculates log2(DATA_SIZE)
 //   - Used for determining hierarchy depth in multiplier tree
 //   - Example: If DATA_SIZE=16, then DATA_SIZE_DEPTH=4
 `define DATA_SIZE_DEPTH ($clog2(`DATA_SIZE))
@@ -108,14 +108,14 @@ limitations under the License.
 
 // Alternative formulations (commented out, kept for reference):
 // `define W_SIZE       ($rtoi((`RING_DEPTH)+1))
-// `define L_SIZE		($rtoi($ceil((`DATA_SIZE_ARB*1.0)/(`W_SIZE*1.0))))
+// `define L_SIZE       ($rtoi($ceil((`DATA_SIZE_ARB*1.0)/(`W_SIZE*1.0))))
 
 // `MODRED_DELAY: Modular reduction pipeline delay
 //   - Computed as L_SIZE * 2 + 1 clock cycles
 //   - Represents the latency of the modular reduction pipeline
 //   - Increases with L_SIZE as more words require more processing stages
 //   - Example: If L_SIZE=2, then MODRED_DELAY=5
-`define MODRED_DELAY	((`L_SIZE)*2 + 1)
+`define MODRED_DELAY    ((`L_SIZE)*2 + 1)
 
 // ------------------------------------------------
 // System parameters (AUTO-COMPUTED)
