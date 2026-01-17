@@ -102,8 +102,8 @@ limitations under the License.
 
 // `L_SIZE: Number of words for Barrett reduction
 //   - Calculates how many W_SIZE words are needed to represent DATA_SIZE_ARB bits
-//   - Essentially computes ceil(DATA_SIZE_ARB / W_SIZE)
-//   - Ranges from 1 to 8 based on the ratio
+//   - Implements conditional approximation of ceil(DATA_SIZE_ARB / W_SIZE) via nested ternary
+//   - Returns value from 1 to 8 (upper bound of 8) based on comparison thresholds
 //   - Used to determine the multi-precision arithmetic structure
 //   - Example: If DATA_SIZE_ARB=14 and W_SIZE=10, then L_SIZE=2
 `define L_SIZE          ((`DATA_SIZE_ARB > `W_SIZE) ? ((`DATA_SIZE_ARB > (`W_SIZE * 2)) ? ((`DATA_SIZE_ARB > (`W_SIZE * 3)) ? ((`DATA_SIZE_ARB > (`W_SIZE * 4)) ? ((`DATA_SIZE_ARB > (`W_SIZE * 5)) ? ((`DATA_SIZE_ARB > (`W_SIZE * 6)) ? ((`DATA_SIZE_ARB > (`W_SIZE * 7)) ? 8 : 7) : 6) : 5) : 4) : 3) : 2) : 1)
