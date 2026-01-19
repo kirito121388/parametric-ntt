@@ -435,23 +435,28 @@ assign {c, s} = x + y + z;
 
 k-red 算法原理：
 对于 NTT 友好素数 q = qH × 2^W_SIZE + 1，有：
-  qH × 2^W_SIZE ≡ -1 (mod q)
+  2^W_SIZE ≡ -1/qH (mod q)
   
 因此：
   T1 = T2H × 2^W_SIZE + T2L
+     ≡ T2L - T2H/qH (mod q)
   
-标准 k-red 公式：
-  T1 mod q 可以近似为 qH × T2L - T2H
+乘以 qH 后得到标准 k-red 公式：
+  qH × T1 ≡ qH × T2L - T2H (mod q)
 
-代码实现说明：
-  代码采用补码运算来实现减法：
+代码实现分析：
+  代码计算的是：
   - T2 = -T2L（二进制补码）
-  - MULT = qH × T2（等于 qH × (-T2L)）
-  - C = MULT + T2H + CARRY
+  - MULT = qH × T2 = -qH × T2L
+  - C = MULT + T2H + CARRY = T2H - qH × T2L + CARRY
   
-  其中 CARRY 用于处理补码运算的边界情况，
-  确保结果的正确性。最终结果可能略大于 q，
-  需要通过最后的比较减法进行修正。
+  这与标准公式 (qH × T2L - T2H) 符号相反。
+  
+  原因：代码实现的是一种变体算法，通过迭代多层约减，
+  每层产生的结果虽然符号与标准公式不同，但通过 CARRY
+  的累积修正和最终的比较减法，最终得到正确的模约减结果。
+  
+  这种实现方式的优势是可以用加法代替减法，简化硬件实现。
 ```
 
 ---
