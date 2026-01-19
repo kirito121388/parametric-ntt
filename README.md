@@ -424,7 +424,7 @@ assign {c, s} = x + y + z;
 
 **迭代约减原理**:
 
-每一层约减利用了以下数学关系：
+每一层约减利用了 k-red 模约减算法的数学关系：
 
 ```
 设输入为 T1，分解为：T1 = T2H × 2^W_SIZE + T2L
@@ -433,20 +433,25 @@ assign {c, s} = x + y + z;
 - T2L = T1[W_SIZE-1:0]（低 W_SIZE 位）
 - T2H = T1 >> W_SIZE（高位部分）
 
-模约减的核心思想是利用模数 q 的特殊结构。
-对于 NTT 友好素数，q 的低 W_SIZE 位接近 1。
+k-red 算法原理：
+对于 NTT 友好素数 q = qH × 2^W_SIZE + 1，有：
+  qH × 2^W_SIZE ≡ -1 (mod q)
+  
+因此：
+  T1 = T2H × 2^W_SIZE + T2L
+  
+标准 k-red 公式：
+  T1 mod q 可以近似为 qH × T2L - T2H
 
-设 q = qH × 2^W_SIZE + qL，其中 qL ≈ 1
-
-则：2^W_SIZE ≡ (q - qL) / qH × (-1) + adjustment (mod q)
-
-实际实现采用近似约减：
-  T1 mod q ≈ qH × (-T2L) + T2H + CARRY
-
-其中：
-- (-T2L) 使用二进制补码表示
-- CARRY 修正补码运算的误差
-- 结果可能略大于 q，需要最终减法修正
+代码实现说明：
+  代码采用补码运算来实现减法：
+  - T2 = -T2L（二进制补码）
+  - MULT = qH × T2（等于 qH × (-T2L)）
+  - C = MULT + T2H + CARRY
+  
+  其中 CARRY 用于处理补码运算的边界情况，
+  确保结果的正确性。最终结果可能略大于 q，
+  需要通过最后的比较减法进行修正。
 ```
 
 ---
